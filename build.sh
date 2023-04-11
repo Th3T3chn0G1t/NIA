@@ -2,16 +2,18 @@
 
 # TODO(Emily): Add usage switch/func?
 
-### Usage:
-# NIA_SILENT: Silences stdout output
-#  
-
-LOGFILE_STAMP="`date -Iseconds`"
-
 # Allow out-of-tree builds
 if [ -z ${NIA_ROOT+x} ]; then
         NIA_ROOT=`realpath .`
 fi
+
+### Usage:
+### NIA_SILENT: Silences script output
+### NIA_NO_LOG: Prevents writing of log files
+### NIA_LOGDIR: Sets log output dir (Default: $NIA_ROOT/Logs)
+### NIA_NO_BUILD_OFX: Disables the building of OFX
+
+LOGFILE_STAMP="`date -Iseconds`"
 
 # Allow out-of-tree builds
 if [ -z ${NIA_LOGDIR+x} ]; then
