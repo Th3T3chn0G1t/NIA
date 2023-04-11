@@ -1,3 +1,11 @@
+
+
+Note:
+https://learn.foundry.com/nuke/developers/63/ndkdevguide/appendixa/index.html#appendixa-index
+
+The NDK information appears to be extremely outdated (cites VS2005 SP1 as a Windows toolchain). Might need to
+contact to ask about NDK relevance/switch to OpenFX
+
 Misc:
 https://learn.foundry.com/nuke/content/misc/nuke_devs.html
 https://learn.foundry.com/nuke/content/timeline_environment/exporting/project_file_settings.html
