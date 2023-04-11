@@ -1,0 +1,3 @@
+[submodule "Source/Vendor/OpenFX"]
+	path = Source/Vendor/OpenFX
+	url = https://github.com/AcademySoftwareFoundation/openfx
