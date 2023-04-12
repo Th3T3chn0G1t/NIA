@@ -1,17 +1,21 @@
 #!/bin/sh
 
-# TODO(Emily): Add usage switch/func?
+# TODO(Emily): Use `getopt` instead of this
+if [ "$1" = "--help" ]; then
+	echo "Usage: $0 [--help]"
+	echo ""
+	echo "Environment:"
+	echo "	NIA_SILENT: Silences script output"
+	echo "	NIA_NO_LOG: Prevents writing of log files"
+	echo "	NIA_LOGDIR: Sets log output dir (Default: \$NIA_ROOT/Logs)"
+	echo "	NIA_NO_BUILD_OFX: Disables the building of OFX"
+	exit 0
+fi
 
 # Allow out-of-tree builds
 if [ -z ${NIA_ROOT+x} ]; then
         NIA_ROOT=`realpath .`
 fi
-
-### Usage:
-### NIA_SILENT: Silences script output
-### NIA_NO_LOG: Prevents writing of log files
-### NIA_LOGDIR: Sets log output dir (Default: $NIA_ROOT/Logs)
-### NIA_NO_BUILD_OFX: Disables the building of OFX
 
 LOGFILE_STAMP="`date -Iseconds`"
 
@@ -34,7 +38,7 @@ debug() {
 }
 
 if [ -z ${NIA_NO_LOG+x} ]; then
-	LOGFILE="$NIA_LOGDIR/NIA-$LOGFILE_STAMP.log"
+	LOGFILE="$NIA_LOGDIR/NIA-Build-$LOGFILE_STAMP.log"
 	MSG="Writing logs to $LOGFILE" debug
 else
 	LOGFILE="/dev/null"
