@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 # TODO(Emily): Use `getopt` instead of this
 if [ "$1" = "--help" ]; then
@@ -31,10 +31,12 @@ debug() {
                 # TODO(Emily): Might need to check for different echo types
                 #              As macOS f.e. doesn't need nor want the `-e` for
                 #              Echoing escape codes.
-                echo -e "[\033[1;35mNIA\033[0;m] $MSG"
+                echo -e $DBGFLAG "[\033[1;35mNIA\033[0;m] $MSG"
         fi
 
-        echo -e "[NIA] $MSG" >> $LOGFILE
+		if [ -z ${NOLOG+x} ]; then
+	        echo -e "[NIA] $MSG" >> $LOGFILE
+		fi
 }
 
 if [ -z ${NIA_NO_LOG+x} ]; then
@@ -47,9 +49,22 @@ fi
 MSG="Using project root $NIA_ROOT" debug
 
 if [ -z ${NIA_NO_BUILD_OFX} ]; then
-	# NOTE(Emily): Let's assume system `python3` is the default for now
-	#              We might actually want to switch this to use Nuke's
-	#              Bundled runtime for consistency's sake.
-	python3 -m pip install -r $NIA_ROOT/Source/Vendor/OpenFX/Documentation/pipreq.txt >> $LOGFILE 2>&1
+	OFX_DIR="$NIA_ROOT/Source/Vendor/OpenFX"
+
+	make -C$OFX_DIR/Support/Library >> $LOGFILE 2>&1 &
+	make -C$OFX_DIR/Support/Plugins >> $LOGFILE 2>&1 &
+	make -C$OFX_DIR/HostSupport >> $LOGFILE 2>&1 &
+
+	MSG="Building OpenFX" DBGFLAG="-n" debug
+
+	while
+		jobs %1 &> /dev/null ||
+		jobs %2 &> /dev/null ||
+		jobs %3 &> /dev/null
+	do
+		echo -ne "."
+		sleep 1
+	done
+	echo " Done!"
 fi
 
